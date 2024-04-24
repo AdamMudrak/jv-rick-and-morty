@@ -7,11 +7,11 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Character {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
-  Long externalId;
-  String name;
-  String status;
-  String gender;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private Long externalId;
+    private String name;
+    private String status;
+    private String gender;
 }
