@@ -3,7 +3,7 @@ package mate.academy.rickandmorty;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.internal.CharacterDto;
+import mate.academy.rickandmorty.dto.internal.RemoteToLocalDto;
 import mate.academy.rickandmorty.service.CharacterRemoteClient;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.boot.CommandLineRunner;
@@ -19,7 +19,9 @@ public class Application {
     private static final String WAIT_MESSAGE = COLOUR_RED + "Local DB is being updated from server."
             + " Please wait for it to finish..." + COLOUR_RESET;
     private static final String SUCCESS_MESSAGE = COLOUR_RED
-            + "Local DB updated from server successfully!" + COLOUR_RESET;
+            + "Local DB updated from server successfully!"
+            + System.lineSeparator()
+            + "You can now use the app!" + COLOUR_RESET;
     private final CharacterService characterService;
     private final CharacterRemoteClient characterRemoteClient;
 
@@ -31,7 +33,7 @@ public class Application {
     public CommandLineRunner commandLineRunner() {
         return (args) -> {
             System.out.println(WAIT_MESSAGE);
-            for (Map.Entry<Integer, List<CharacterDto>> entry
+            for (Map.Entry<Integer, List<RemoteToLocalDto>> entry
                     : characterRemoteClient.getCharactersWithPageKeyMap().entrySet()) {
                 characterService.saveAllLocally(entry.getValue());
             }
