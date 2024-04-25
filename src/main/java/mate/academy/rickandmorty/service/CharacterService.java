@@ -1,8 +1,8 @@
 package mate.academy.rickandmorty.service;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
+import org.springframework.data.domain.Pageable;
 
 public interface CharacterService {
     List<CharacterDto> findLocalCharacters(Pageable pageable);
