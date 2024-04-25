@@ -1,12 +1,13 @@
 package mate.academy.rickandmorty.service;
 
 import java.util.List;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.internal.CharacterDto;
+import mate.academy.rickandmorty.dto.internal.RemoteToLocalDto;
+import mate.academy.rickandmorty.dto.internal.RestClientDto;
 import mate.academy.rickandmorty.entity.LocalCharacter;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.repository.CharacterRepository;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -16,25 +17,25 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterMapper characterMapper;
 
     @Override
-    public List<CharacterDto> findLocalCharacters(Pageable pageable) {
-        return characterRepository.findAll(pageable).stream()
-                .map(characterMapper::toCharacterDto)
+    public List<RestClientDto> findAllWhereNameContains(String partOfName) {
+        return characterRepository.findAllWhereNameContains(partOfName.trim()).stream()
+                .map(characterMapper::toRestDto)
                 .toList();
     }
 
     @Override
-    public CharacterDto findLocalCharacterById(Long id) {
+    public RestClientDto findLocalCharacterByRandomId() {
+        Long randomId = new Random().nextLong(characterRepository.getMaxId()) + 1;
         LocalCharacter localCharacter = characterRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("Some message"));
-        return characterMapper.toCharacterDto(localCharacter);
+                .getById(randomId);
+        return characterMapper.toRestDto(localCharacter);
     }
 
     @Override
-    public void saveAllLocally(List<CharacterDto> characterDtos) {
-        characterRepository.saveAll(characterDtos
+    public void saveAllLocally(List<RemoteToLocalDto> remoteToLocalDtos) {
+        characterRepository.saveAll(remoteToLocalDtos
                 .stream()
-                .map(characterMapper::toCharacter)
+                .map(characterMapper::toLocalCharacterDto)
                 .toList());
     }
 }

@@ -1,13 +1,13 @@
 package mate.academy.rickandmorty.service;
 
 import java.util.List;
-import mate.academy.rickandmorty.dto.internal.CharacterDto;
-import org.springframework.data.domain.Pageable;
+import mate.academy.rickandmorty.dto.internal.RestClientDto;
+import mate.academy.rickandmorty.dto.internal.RemoteToLocalDto;
 
 public interface CharacterService {
-    List<CharacterDto> findLocalCharacters(Pageable pageable);
+    List<RestClientDto> findAllWhereNameContains(String partOfName);
 
-    CharacterDto findLocalCharacterById(Long id);
+    RestClientDto findLocalCharacterByRandomId();
 
-    void saveAllLocally(List<CharacterDto> characterDtos);
+    void saveAllLocally(List<RemoteToLocalDto> remoteToLocalDtos);
 }
