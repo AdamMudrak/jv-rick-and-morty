@@ -3,6 +3,7 @@ package mate.academy.rickandmorty.service;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
+import mate.academy.rickandmorty.entity.LocalCharacter;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.repository.CharacterRepository;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +23,11 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public CharacterDto findCharacterById(int id) {
-        return null;
+    public CharacterDto findLocalCharacterById(Long id) {
+        LocalCharacter localCharacter = characterRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Some message"));
+        return characterMapper.toCharacterDto(localCharacter);
     }
 
     @Override
