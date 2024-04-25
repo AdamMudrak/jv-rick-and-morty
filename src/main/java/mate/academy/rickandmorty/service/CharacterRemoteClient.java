@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDataDto;
-import mate.academy.rickandmorty.dto.internal.CharacterDto;
+import mate.academy.rickandmorty.dto.internal.RemoteToLocalDto;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -23,21 +23,21 @@ public class CharacterRemoteClient {
     private static final Integer DEFAULT_PAGE = 1;
     private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
     private final ObjectMapper mapper;
-    private final Map<Integer, List<CharacterDto>> charactersWithPageKeyMap = new HashMap<>();
+    private final Map<Integer, List<RemoteToLocalDto>> charactersWithPageKeyMap = new HashMap<>();
 
-    public Map<Integer, List<CharacterDto>> getCharactersWithPageKeyMap() {
+    public Map<Integer, List<RemoteToLocalDto>> getCharactersWithPageKeyMap() {
         int page = DEFAULT_PAGE;
         HttpRequest httpRequest = formHttpRequest(page);
         HttpResponse<String> response = formHttpResponse(httpRequest);
         CharacterResponseDataDto dataDto = formListFromResponse(response);
-        List<CharacterDto> charactersDto = Arrays.stream(dataDto.results()).toList();
-        charactersWithPageKeyMap.put(page, charactersDto);
+        List<RemoteToLocalDto> remoteToLocalDtos = Arrays.stream(dataDto.results()).toList();
+        charactersWithPageKeyMap.put(page, remoteToLocalDtos);
         while (dataDto.info().next() != null) {
             httpRequest = formHttpRequest(++page);
             response = formHttpResponse(httpRequest);
             dataDto = formListFromResponse(response);
-            charactersDto = Arrays.stream(dataDto.results()).toList();
-            charactersWithPageKeyMap.put(page, charactersDto);
+            remoteToLocalDtos = Arrays.stream(dataDto.results()).toList();
+            charactersWithPageKeyMap.put(page, remoteToLocalDtos);
         }
         return charactersWithPageKeyMap;
     }
