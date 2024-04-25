@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 public interface CharacterService {
     List<CharacterDto> findLocalCharacters(Pageable pageable);
 
-    CharacterDto findCharacterById(int id);
+    CharacterDto findLocalCharacterById(Long id);
 
     void saveAllLocally(List<CharacterDto> characterDtos);
 }
