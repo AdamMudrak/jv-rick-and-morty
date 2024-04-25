@@ -11,6 +11,6 @@ public interface CharacterRepository extends JpaRepository<LocalCharacter, Long>
 
     @Query(value = "SELECT localcharacter "
             + "FROM LocalCharacter localcharacter "
-            + "WHERE localcharacter.name LIKE %:name%")
-    List<LocalCharacter> findAllWhereNameContains(String name);
+            + "WHERE localcharacter.name LIKE %:namePart%")
+    List<LocalCharacter> findAllWhereNameContains(String namePart);
 }

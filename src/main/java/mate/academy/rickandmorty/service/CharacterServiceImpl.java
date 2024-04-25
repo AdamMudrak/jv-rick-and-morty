@@ -17,8 +17,8 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterMapper characterMapper;
 
     @Override
-    public List<RestClientDto> findAllWhereNameContains(String partOfName) {
-        return characterRepository.findAllWhereNameContains(partOfName.trim()).stream()
+    public List<RestClientDto> findAllWhereNameContains(String namePart) {
+        return characterRepository.findAllWhereNameContains(namePart.trim()).stream()
                 .map(characterMapper::toRestDto)
                 .toList();
     }

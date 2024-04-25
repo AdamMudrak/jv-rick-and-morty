@@ -5,7 +5,7 @@ import mate.academy.rickandmorty.dto.internal.RemoteToLocalDto;
 import mate.academy.rickandmorty.dto.internal.RestClientDto;
 
 public interface CharacterService {
-    List<RestClientDto> findAllWhereNameContains(String partOfName);
+    List<RestClientDto> findAllWhereNameContains(String namePart);
 
     RestClientDto findLocalCharacterByRandomId();
 
