@@ -36,6 +36,7 @@ public class CharacterRemoteClient {
             httpRequest = formHttpRequest(++page);
             response = formHttpResponse(httpRequest);
             dataDto = formListFromResponse(response);
+            charactersDto = Arrays.stream(dataDto.results()).toList();
             charactersWithPageKeyMap.put(page, charactersDto);
         }
         return charactersWithPageKeyMap;
