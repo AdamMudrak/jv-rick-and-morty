@@ -1,8 +1,8 @@
 package mate.academy.rickandmorty.service;
 
 import java.util.List;
-import mate.academy.rickandmorty.dto.internal.RestClientDto;
 import mate.academy.rickandmorty.dto.internal.RemoteToLocalDto;
+import mate.academy.rickandmorty.dto.internal.RestClientDto;
 
 public interface CharacterService {
     List<RestClientDto> findAllWhereNameContains(String partOfName);
