@@ -22,10 +22,11 @@ public class CharacterRemoteClient {
     private static final String BASE_URL = "https://rickandmortyapi.com/api/character?page=%d";
     private static final Integer DEFAULT_PAGE = 1;
     private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
+    private final CharacterService characterService;
     private final ObjectMapper mapper;
     private final Map<Integer, List<RemoteToLocalDto>> charactersWithPageKeyMap = new HashMap<>();
 
-    public Map<Integer, List<RemoteToLocalDto>> getCharactersWithPageKeyMap() {
+    public void fillLocalDbWithCharacters() {
         int page = DEFAULT_PAGE;
         HttpRequest httpRequest = formHttpRequest(page);
         HttpResponse<String> response = formHttpResponse(httpRequest);
@@ -39,7 +40,10 @@ public class CharacterRemoteClient {
             remoteToLocalDtos = Arrays.stream(dataDto.results()).toList();
             charactersWithPageKeyMap.put(page, remoteToLocalDtos);
         }
-        return charactersWithPageKeyMap;
+        for (Map.Entry<Integer, List<RemoteToLocalDto>> entry
+                : charactersWithPageKeyMap.entrySet()) {
+            characterService.saveAllLocally(entry.getValue());
+        }
     }
 
     private HttpRequest formHttpRequest(int page) {
