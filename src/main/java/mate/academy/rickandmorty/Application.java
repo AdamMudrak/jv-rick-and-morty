@@ -24,6 +24,9 @@ public class Application {
             + "Local DB updated from server successfully!"
             + System.lineSeparator()
             + "You can now use the app!" + COLOUR_RESET;
+    private static final String HEADLESS_PROPERTY = "java.awt.headless";
+    private static final String HEADLESS_PROPERTY_VALUE = "false";
+    private static final String URL_OF_API = "http://localhost:8080/swagger-ui/index.html";
     private final CharacterService characterService;
     private final CharacterRemoteClient characterRemoteClient;
 
@@ -34,19 +37,27 @@ public class Application {
     @Bean
     public CommandLineRunner commandLineRunner() {
         return (args) -> {
-            System.out.println(WAIT_MESSAGE);
-            for (Map.Entry<Integer, List<RemoteToLocalDto>> entry
-                    : characterRemoteClient.getCharactersWithPageKeyMap().entrySet()) {
-                characterService.saveAllLocally(entry.getValue());
-            }
-            System.out.println(SUCCESS_MESSAGE);
-            System.setProperty("java.awt.headless", "false");
-            Desktop desktop = Desktop.getDesktop();
-            try {
-                desktop.browse(new URI("http://localhost:8080/swagger-ui/index.html"));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            fetchDataFromServer();
+            openApiInBrowser();
         };
+    }
+
+    private void fetchDataFromServer() {
+        System.out.println(WAIT_MESSAGE);
+        for (Map.Entry<Integer, List<RemoteToLocalDto>> entry
+                : characterRemoteClient.getCharactersWithPageKeyMap().entrySet()) {
+            characterService.saveAllLocally(entry.getValue());
+        }
+        System.out.println(SUCCESS_MESSAGE);
+    }
+
+    private void openApiInBrowser() {
+        System.setProperty(HEADLESS_PROPERTY, HEADLESS_PROPERTY_VALUE);
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            desktop.browse(new URI(URL_OF_API));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
