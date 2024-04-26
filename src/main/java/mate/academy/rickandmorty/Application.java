@@ -1,5 +1,7 @@
 package mate.academy.rickandmorty;
 
+import java.awt.Desktop;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +40,13 @@ public class Application {
                 characterService.saveAllLocally(entry.getValue());
             }
             System.out.println(SUCCESS_MESSAGE);
+            System.setProperty("java.awt.headless", "false");
+            Desktop desktop = Desktop.getDesktop();
+            try {
+                desktop.browse(new URI("http://localhost:8080/swagger-ui/index.html"));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         };
     }
 }
