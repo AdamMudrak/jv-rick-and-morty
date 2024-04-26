@@ -38,7 +38,7 @@ public class Application {
     public CommandLineRunner commandLineRunner() {
         return (args) -> {
             fetchDataFromServer();
-            openApiInBrowser();
+            //openApiInBrowser();
         };
     }
 
@@ -51,6 +51,11 @@ public class Application {
         System.out.println(SUCCESS_MESSAGE);
     }
 
+    /**
+     * This code should be run only on local machine
+     * as build fails on GitHub because there is
+     * no browser to be opened
+     */
     private void openApiInBrowser() {
         System.setProperty(HEADLESS_PROPERTY, HEADLESS_PROPERTY_VALUE);
         Desktop desktop = Desktop.getDesktop();
